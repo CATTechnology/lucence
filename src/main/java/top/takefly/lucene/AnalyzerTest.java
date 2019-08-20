@@ -5,6 +5,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.apache.lucene.analysis.tokenattributes.PackedTokenAttributeImpl;
 import org.junit.Test;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
@@ -42,6 +43,25 @@ public class AnalyzerTest {
             //System.out.println("end->"+offset.endOffset());
         }
         tokenStream.close();
+    }
+
+    @Test
+    public void StandardAnalyzer() throws Exception{
+        Analyzer analyzer = new StandardAnalyzer();
+        TokenStream tokenStream = analyzer.tokenStream("test", "我爱你");
+        CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
+        OffsetAttribute offset = tokenStream.addAttribute(OffsetAttribute.class);
+        tokenStream.reset();
+
+        while(tokenStream.incrementToken()){
+            System.out.println("start位置:"+offset.startOffset());
+            System.out.println(charTermAttribute);
+            System.out.println("end位置:"+offset.endOffset());
+            System.out.println("---------------");
+        }
+
+        tokenStream.close();
+
     }
 
     @Test
